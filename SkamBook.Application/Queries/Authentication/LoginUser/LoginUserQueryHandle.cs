@@ -33,14 +33,14 @@ public class LoginUserQueryHandle : IRequestHandler<LoginUserQuery, ResponseView
         {
             var token = await _jwtService.GenerateJwtToken(request.Email);
             
-            var user = await _userRepository.GetUserByEmail(request.Email);
+            var user = await _userRepository.GetUserByEmailAsync(request.Email);
 
             if (user is null)
             {
                 return new ResponseViewModel(true, new LoginResponseViewModel(null, token));
             }
 
-            var userViewModel = new UserViewModel(user.Name);
+            var userViewModel = new UserViewModel(user.FullName, user.Email.Endereco);
             
             var login = new LoginResponseViewModel(userViewModel, token);
 

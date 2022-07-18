@@ -6,29 +6,25 @@ using SkamBook.Infrastructure.Context;
 
 namespace SkamBook.Infrastructure.Repositories;
 
-public class UserRepository : IUserRepository
+public class CategoryRepository : ICategoryRepository
 {
     private readonly SkamBookContext _context;
-    
 
-    public UserRepository(SkamBookContext context)
+    public CategoryRepository(SkamBookContext context)
     {
         _context = context;
     }
 
-    public async Task<User> GetUserByEmailAsync(string email)
+    public async Task Add(Category category)
     {
-        var user = await _context.Users
-            .SingleOrDefaultAsync(u => u.Email.Endereco.Equals(email));
-
-        return user;
+        await _context.AddAsync(category);
     }
 
-    public async Task AddUserAsync(User user)
+    public async Task<IEnumerable<Category>> GetAllAsync()
     {
-        await _context.AddAsync(user);
+        return await _context.Categories.ToListAsync();
     }
-
+    
     public void Dispose()
     {
         _context.Dispose();

@@ -4,5 +4,6 @@ namespace SkamBook.Core.Interfaces.Repositories;
 
 public interface IUserRepository : IDisposable
 {
-    Task<User> GetUserByEmail(string email);
+    Task<User> GetUserByEmailAsync(string email);
+    Task AddUserAsync(User user);
 }

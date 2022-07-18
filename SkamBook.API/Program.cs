@@ -1,6 +1,11 @@
-using SkamBook.API.Configurations;
+using System.Text.Json.Serialization;
 
+using FluentValidation.AspNetCore;
+
+using SkamBook.API.Configurations;
+using SkamBook.API.Filters;
 using SkamBook.Application;
+using SkamBook.Application.Validators;
 using SkamBook.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddConfigurationsApi();
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add(typeof(ValidationFilters)))
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterUserCommandValidator>())
+    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

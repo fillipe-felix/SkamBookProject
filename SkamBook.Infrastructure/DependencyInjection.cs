@@ -65,6 +65,7 @@ public static class DependencyInjection
         services
             .AddSingleton(settings)
             .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<ICategoryRepository, CategoryRepository>()
             .AddScoped<IJwtService, JwtService>()
             .AddScoped<IUnitOfWork, UnitOfWork>();
         
