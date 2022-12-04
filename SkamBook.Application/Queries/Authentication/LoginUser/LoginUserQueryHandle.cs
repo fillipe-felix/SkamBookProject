@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Identity;
 

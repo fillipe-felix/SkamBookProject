@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using SkamBook.Core.Entities;
@@ -17,6 +15,10 @@ public class SkamBookContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Book> Books { get; set; }
+    
+    public DbSet<Image> Images { get; set; }
+    public DbSet<TokenPassword> TokenPasswords { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

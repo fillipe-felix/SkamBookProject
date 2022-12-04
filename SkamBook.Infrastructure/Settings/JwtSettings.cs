@@ -1,4 +1,4 @@
-﻿namespace SkamBook.Infrastructure.UI;
+﻿namespace SkamBook.Infrastructure.Settings;
 
 public class JwtSettings
 {

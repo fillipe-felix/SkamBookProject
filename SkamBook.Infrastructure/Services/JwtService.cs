@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using SkamBook.Core.Interfaces.Services;
 using SkamBook.Infrastructure.Context;
-using SkamBook.Infrastructure.UI;
+using SkamBook.Infrastructure.Settings;
 
 namespace SkamBook.Infrastructure.Services;
 
@@ -37,7 +37,6 @@ public class JwtService : IJwtService
 
         return encodedToken;
     }
-
     
     private string EncodedToken(ClaimsIdentity identityClaims)
     {

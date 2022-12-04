@@ -27,7 +27,7 @@ public class ErrorHandlingMiddleware
     private static Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         var code = HttpStatusCode.InternalServerError;
-        var result = JsonSerializer.Serialize(new { error = "Um erro ocorreu enquanto processava arequest" });
+        var result = JsonSerializer.Serialize(new { error = "Um erro ocorreu enquanto processava a request" });
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)code;
         return context.Response.WriteAsync(result);

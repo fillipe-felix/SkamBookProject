@@ -12,9 +12,10 @@ using SkamBook.Core.Interfaces;
 using SkamBook.Core.Interfaces.Repositories;
 using SkamBook.Core.Interfaces.Services;
 using SkamBook.Infrastructure.Context;
+using SkamBook.Infrastructure.Interfaces;
 using SkamBook.Infrastructure.Repositories;
 using SkamBook.Infrastructure.Services;
-using SkamBook.Infrastructure.UI;
+using SkamBook.Infrastructure.Settings;
 using SkamBook.Infrastructure.UoW;
 
 namespace SkamBook.Infrastructure;
@@ -66,9 +67,14 @@ public static class DependencyInjection
             .AddSingleton(settings)
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<ICategoryRepository, CategoryRepository>()
+            .AddScoped<IBookRepository, BookRepository>()
+            .AddScoped<IImageRepository, ImageRepository>()
             .AddScoped<IJwtService, JwtService>()
-            .AddScoped<IUnitOfWork, UnitOfWork>();
-        
+            .AddScoped<IUnitOfWork, UnitOfWork>()
+            .AddScoped<IAzureService, AzureService>()
+            .AddScoped<IEmailService, SendGridService>()
+            .AddScoped<ITokenPasswordRepository, TokenPasswordRepository>();
+
         CreateRoles(builder.Services.BuildServiceProvider());
         
         return services;

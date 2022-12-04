@@ -26,12 +26,21 @@ public class CategoryController : ControllerBase
     
 
     [HttpPost]
-    public async Task<IActionResult> AddCategoryAsync()
+    public async Task<IActionResult> AddCategoryAsync([FromBody] string category)
     {
-        var category = new Category("Ação");
-        await _categoryRepository.Add(category);
+        await _categoryRepository.Add(new Category(category));
         await _unitOfWork.Commit();
 
         return Ok();
+    }
+    
+    
+    
+    [HttpGet]
+    public async Task<IActionResult> GetCategoryAsync()
+    {
+        var response = await _categoryRepository.GetAllAsync();
+
+        return Ok(response);
     }
 }

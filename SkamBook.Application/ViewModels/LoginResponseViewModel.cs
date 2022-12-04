@@ -2,4 +2,4 @@
 
 namespace SkamBook.Application.ViewModels;
 
-public record LoginResponseViewModel(UserViewModel UserViewModel, string AcessToken);
+public record LoginResponseViewModel(UserViewModel UserViewModel, string AccessToken);

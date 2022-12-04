@@ -1,14 +1,21 @@
 ﻿using MediatR;
 
 using SkamBook.Application.ViewModels;
-using SkamBook.Core.Entities;
 
 namespace SkamBook.Application.Commands.UserEntity.CreateUser;
 
-public record CreateUserCommand(
-    string Email, 
-    DateTime BirthDate, 
-    string FullName,
-    long Lat,
-    long Lon,
-    List<Guid> CategoriesId) : IRequest<ResponseViewModel>;
+public class CreateUserCommand : IRequest<ResponseViewModel>
+{
+    public DateTime BirthDate { get; set; }
+    public string FullName { get; set; }
+    public long Lat { get; set; }
+    public long Lon { get; set; }
+    public string ImageProfile { get; set; }
+    public List<Guid> CategoriesId { get; set; }
+    internal string Email { get; set; }
+
+    public void SetEmail(string email)
+    {
+        Email = email;
+    }
+}

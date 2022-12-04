@@ -1,4 +1,6 @@
-﻿namespace SkamBook.Core.Interfaces.Services
+﻿using System.Security.Claims;
+
+namespace SkamBook.Core.Interfaces.Services
 {
     public interface IJwtService
     {

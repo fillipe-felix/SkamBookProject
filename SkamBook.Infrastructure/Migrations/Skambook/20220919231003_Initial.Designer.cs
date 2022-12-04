@@ -12,8 +12,8 @@ using SkamBook.Infrastructure.Context;
 namespace SkamBook.Infrastructure.Migrations.Skambook
 {
     [DbContext(typeof(SkamBookContext))]
-    [Migration("20220718131447_AddTableCategory")]
-    partial class AddTableCategory
+    [Migration("20220919231003_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,66 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("SkamBook.Core.Entities.Book", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("SkamBook.Core.Entities.BookCategory", b =>
+                {
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BookId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("BookCategory");
+                });
+
+            modelBuilder.Entity("SkamBook.Core.Entities.BookImage", b =>
+                {
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ImageId", "BookId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BookImage");
+                });
+
             modelBuilder.Entity("SkamBook.Core.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -60,6 +120,21 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("SkamBook.Core.Entities.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UrlImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("SkamBook.Core.Entities.User", b =>
@@ -81,9 +156,14 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ImageProfileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("ImageProfileId");
 
                     b.ToTable("Users");
                 });
@@ -106,11 +186,66 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.ToTable("UserCategory");
                 });
 
+            modelBuilder.Entity("SkamBook.Core.Entities.Book", b =>
+                {
+                    b.HasOne("SkamBook.Core.Entities.User", "User")
+                        .WithMany("Books")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SkamBook.Core.Entities.BookCategory", b =>
+                {
+                    b.HasOne("SkamBook.Core.Entities.Book", "Book")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SkamBook.Core.Entities.Category", "Category")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("SkamBook.Core.Entities.BookImage", b =>
+                {
+                    b.HasOne("SkamBook.Core.Entities.Book", "Book")
+                        .WithMany("BookImages")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SkamBook.Core.Entities.Image", "Image")
+                        .WithMany("BookImages")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Image");
+                });
+
             modelBuilder.Entity("SkamBook.Core.Entities.User", b =>
                 {
                     b.HasOne("SkamBook.Core.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SkamBook.Core.Entities.Image", "ImageProfile")
+                        .WithMany()
+                        .HasForeignKey("ImageProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -138,6 +273,8 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
 
                     b.Navigation("Email")
                         .IsRequired();
+
+                    b.Navigation("ImageProfile");
                 });
 
             modelBuilder.Entity("SkamBook.Core.Entities.UserCategory", b =>
@@ -145,13 +282,13 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.HasOne("SkamBook.Core.Entities.Category", "Category")
                         .WithMany("UserCategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SkamBook.Core.Entities.User", "User")
                         .WithMany("UserCategories")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -159,13 +296,29 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SkamBook.Core.Entities.Book", b =>
+                {
+                    b.Navigation("BookCategories");
+
+                    b.Navigation("BookImages");
+                });
+
             modelBuilder.Entity("SkamBook.Core.Entities.Category", b =>
                 {
+                    b.Navigation("BookCategories");
+
                     b.Navigation("UserCategories");
+                });
+
+            modelBuilder.Entity("SkamBook.Core.Entities.Image", b =>
+                {
+                    b.Navigation("BookImages");
                 });
 
             modelBuilder.Entity("SkamBook.Core.Entities.User", b =>
                 {
+                    b.Navigation("Books");
+
                     b.Navigation("UserCategories");
                 });
 #pragma warning restore 612, 618

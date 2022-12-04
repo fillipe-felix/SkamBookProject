@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace SkamBook.Core.Entities;
+﻿namespace SkamBook.Core.Entities;
 
 
 public class Email : BaseEntity

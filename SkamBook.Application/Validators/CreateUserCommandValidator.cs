@@ -8,9 +8,9 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
     public CreateUserCommandValidator()
     {
-        RuleFor(c => c.Email)
-            .EmailAddress()
-            .WithMessage("E-mail não é válido!");
+        // RuleFor(c => c.Email)
+        //     .EmailAddress()
+        //     .WithMessage("E-mail não é válido!");
         
         RuleFor(c => c.BirthDate)
             .NotNull()
@@ -22,15 +22,15 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .NotEmpty()
             .WithMessage("Nome é obrigatório.");
         
-        RuleFor(c => c.Lat)
-            .NotNull()
-            .NotEmpty()
-            .WithMessage("Localização é obrigatório.");
-        
-        RuleFor(c => c.Lon)
-            .NotNull()
-            .NotEmpty()
-            .WithMessage("Localização é obrigatório.");
+        // RuleFor(c => c.Lat)
+        //     .NotNull()
+        //     .NotEmpty()
+        //     .WithMessage("Localização é obrigatório.");
+        //
+        // RuleFor(c => c.Lon)
+        //     .NotNull()
+        //     .NotEmpty()
+        //     .WithMessage("Localização é obrigatório.");
 
         RuleFor(c => c.CategoriesId)
             .NotNull()

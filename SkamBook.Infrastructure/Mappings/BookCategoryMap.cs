@@ -5,24 +5,24 @@ using SkamBook.Core.Entities;
 
 namespace SkamBook.Infrastructure.Mappings;
 
-public class UserCategoryMap : IEntityTypeConfiguration<UserCategory>
+public class BookCategoryMap : IEntityTypeConfiguration<BookCategory>
 {
 
 
-    public void Configure(EntityTypeBuilder<UserCategory> builder)
+    public void Configure(EntityTypeBuilder<BookCategory> builder)
     {
         builder
-            .HasKey(u => new { u.UserId, u.CategoryId });
+            .HasKey(u => new { u.BookId, u.CategoryId });
         
         builder
-            .HasOne(uc => uc.User)
-            .WithMany(u => u.UserCategories)
-            .HasForeignKey(uc => uc.UserId)
+            .HasOne(uc => uc.Book)
+            .WithMany(u => u.BookCategories)
+            .HasForeignKey(uc => uc.BookId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(uc => uc.Category)
-            .WithMany(u => u.UserCategories)
+            .WithMany(u => u.BookCategories)
             .HasForeignKey(uc => uc.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
     }

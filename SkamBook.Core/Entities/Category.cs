@@ -14,4 +14,5 @@ public class Category : BaseEntity
     public DateTime CreatedAt { get; private set; }
 
     public List<UserCategory> UserCategories { get; private set; }
+    public List<BookCategory> BookCategories { get; private set; }
 }
