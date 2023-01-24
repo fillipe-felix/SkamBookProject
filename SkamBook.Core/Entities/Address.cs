@@ -2,13 +2,15 @@
 
 public class Address : BaseEntity
 {
-    public Address(long lat, long lon)
+    public Address(string lat, string lon, string city)
     {
         Lat = lat;
         Lon = lon;
+        City = city;
     }
 
-    public long Lat { get; private set; }
-    public long Lon { get; private set; }
+    public string Lat { get; private set; }
+    public string Lon { get; private set; }
+    public string City { get; private set; }
     public int MaxDistance { get; private set; }
 }

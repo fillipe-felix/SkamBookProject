@@ -20,6 +20,14 @@ public class BookRepository : IBookRepository
         await _context.AddAsync(book);
     }
 
+    public async Task<Book> GetBookByIdAsync(Guid id)
+    {
+        var book = await _context.Books
+                    .SingleOrDefaultAsync(u => u.Id.Equals(id));
+        
+        return book;
+    }
+
     public void Dispose()
     {
         _context.Dispose();

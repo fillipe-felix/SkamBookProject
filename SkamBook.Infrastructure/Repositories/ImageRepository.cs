@@ -15,9 +15,9 @@ public class ImageRepository : IImageRepository
         _context = context;
     }
 
-    public async Task Add(Image image)
+    public async Task Add(IList<Image> images)
     {
-        await _context.AddAsync(image);
+        await _context.AddRangeAsync(images);
     }
 
     public void Dispose()

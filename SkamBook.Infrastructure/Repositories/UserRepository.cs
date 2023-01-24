@@ -23,10 +23,50 @@ public class UserRepository : IUserRepository
 
         return user;
     }
+    
+    public async Task<User> GetUserByEmailWithAddressAsync(string email)
+    {
+        var user = await _context
+            .Users
+            .Include(u => u.Address)
+            .SingleOrDefaultAsync(u => u.Email.Endereco.Equals(email));
+
+        return user;
+    }
 
     public async Task AddUserAsync(User user)
     {
         await _context.AddAsync(user);
+    }
+    
+    public async Task<IList<User>> GetAllUserAsync()
+    {
+        return await _context
+            .Users
+            .Include(u => u.Address)
+            .ToListAsync();
+    }
+    
+    public async Task<IList<User>> GetAllUserByCityAddressWithBooksAsync(string city, string email)
+    {
+        return await _context
+            .Users
+            .Include(user => user.Address)
+            .Include(user => user.Books)
+            .ThenInclude(books => books.BookImages)
+            .ThenInclude(image => image.Image)
+            .Where(s => s.Address.City.Equals(city) && !s.Email.Endereco.Equals(email) && s.Books.Count > 0)
+            .ToListAsync();
+    }
+
+    public async Task<User> GetUserByEmailWithBooksAsync(string email)
+    {
+        var user = await _context
+            .Users
+            .Include(u => u.Books)
+            .SingleOrDefaultAsync(u => u.Email.Endereco.Equals(email));
+
+        return user;
     }
 
     public void Dispose()

@@ -12,5 +12,9 @@ public class ImageMap : IEntityTypeConfiguration<Image>
     {
         builder
             .HasKey(i => i.Id);
+
+        builder
+            .Property(i => i.UrlImage)
+            .IsRequired(false);
     }
 }

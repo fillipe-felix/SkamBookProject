@@ -7,13 +7,13 @@ public class User : BaseEntity
         
     }
 
-    public User(string fullName, DateTime birthDate, string email, long lat, long lon, List<Guid> categories, Image imageProfile)
+    public User(string fullName, DateTime birthDate, string email, string lat, string lon, string city, List<Guid> categories, Image imageProfile)
     {
         FullName = fullName;
         BirthDate = birthDate;
         Email = new Email(email);
         Active = true;
-        Address = new Address(lat, lon);
+        Address = new Address(lat, lon, city);
 
         ImageProfile = imageProfile;
         

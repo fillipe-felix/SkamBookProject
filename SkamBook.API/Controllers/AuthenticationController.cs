@@ -7,7 +7,6 @@ using SkamBook.Application.Commands.ForgotPasswordUser;
 using SkamBook.Application.Commands.ResetPasswordUser;
 using SkamBook.Application.Commands.ValidRandomToken;
 using SkamBook.Application.Queries.Authentication.LoginUser;
-using SkamBook.Application.Queries.User.LoginUser;
 
 namespace SkamBook.API.Controllers;
 

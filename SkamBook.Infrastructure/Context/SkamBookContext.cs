@@ -16,6 +16,7 @@ public class SkamBookContext : DbContext
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Book> Books { get; set; }
+    public DbSet<MatchBook> Matches { get; set; }
     
     public DbSet<Image> Images { get; set; }
     public DbSet<TokenPassword> TokenPasswords { get; set; }

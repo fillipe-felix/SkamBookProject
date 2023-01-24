@@ -1,5 +1,6 @@
 ﻿using MediatR;
 
+using SkamBook.Application.Extensions;
 using SkamBook.Application.ViewModels;
 using SkamBook.Core.Entities;
 using SkamBook.Core.Interfaces;
@@ -15,32 +16,43 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Respo
     private readonly IImageRepository _imageRepository;
     private readonly IAzureService _azureService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUser _user;
 
-    public CreateBookCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IAzureService azureService, IBookRepository bookRepository, IImageRepository imageRepository)
+    public CreateBookCommandHandler(
+        IUserRepository userRepository, 
+        IUnitOfWork unitOfWork, 
+        IAzureService azureService, 
+        IBookRepository bookRepository, 
+        IImageRepository imageRepository, 
+        IUser user)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _azureService = azureService;
         _bookRepository = bookRepository;
         _imageRepository = imageRepository;
+        _user = user;
     }
 
     public async Task<ResponseViewModel> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
+        var email = _user.ObterUserEmail();
 
-        var user = await _userRepository.GetUserByEmailAsync(request.email);
+        var user = await _userRepository.GetUserByEmailAsync(email);
         
         var linkImagens = await _azureService.UploadBase64Image(request.base64Images, "skambookcontainer");
 
         var images = linkImagens.Select(c => new Image(c)).ToList();
 
-        var book = new Core.Entities.Book(user.Id, request.name, request.description, request.CategoriesId, images.Select(c => c.Id).ToList());
+        var book = new Core.Entities.Book(
+            user.Id, 
+            request.name, 
+            request.author, 
+            request.description, 
+            request.CategoriesId, 
+            images.Select(c => c.Id).ToList());
 
-        foreach (var image in images)
-        {
-            await _imageRepository.Add(image);
-        }
-        
+        await _imageRepository.Add(images);
         await _bookRepository.Add(book);
         
         var result = await _unitOfWork.Commit();

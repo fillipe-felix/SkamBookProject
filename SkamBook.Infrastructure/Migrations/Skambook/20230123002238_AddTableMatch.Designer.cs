@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkamBook.Infrastructure.Context;
 
@@ -11,9 +12,10 @@ using SkamBook.Infrastructure.Context;
 namespace SkamBook.Infrastructure.Migrations.Skambook
 {
     [DbContext(typeof(SkamBookContext))]
-    partial class SkamBookContextModelSnapshot : ModelSnapshot
+    [Migration("20230123002238_AddTableMatch")]
+    partial class AddTableMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,10 +55,6 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -150,19 +148,19 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BookId")
+                    b.Property<Guid>("Book1Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BookIdLiked")
+                    b.Property<Guid>("Book2Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsMatched")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("User1Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserIdLiked")
+                    b.Property<Guid>("User2Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");

@@ -1,5 +1,7 @@
 ﻿using System.Text;
 
+using GoogleApi.Extensions;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -73,7 +75,10 @@ public static class DependencyInjection
             .AddScoped<IUnitOfWork, UnitOfWork>()
             .AddScoped<IAzureService, AzureService>()
             .AddScoped<IEmailService, SendGridService>()
-            .AddScoped<ITokenPasswordRepository, TokenPasswordRepository>();
+            .AddScoped<IGoogleService, GoogleService>()
+            .AddScoped<ITokenPasswordRepository, TokenPasswordRepository>()
+            .AddScoped<IMatchRepository, MatchReposotiry>()
+            .AddGoogleApiClients();
 
         CreateRoles(builder.Services.BuildServiceProvider());
         

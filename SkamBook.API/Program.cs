@@ -27,8 +27,9 @@ builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection(nameof(SendGridSettings)));
+builder.Services.Configure<GoogleApiSettings>(builder.Configuration.GetSection(nameof(GoogleApiSettings)));
 builder.Services.AddInfrastructure(builder);
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
     
 
 

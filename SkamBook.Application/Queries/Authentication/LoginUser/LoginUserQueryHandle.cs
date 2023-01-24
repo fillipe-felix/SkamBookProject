@@ -1,17 +1,14 @@
-﻿using System.Security.Claims;
-
-using MediatR;
+﻿using MediatR;
 
 using Microsoft.AspNetCore.Identity;
 
-using SkamBook.Application.Queries.Authentication.LoginUser;
 using SkamBook.Application.ViewModels;
 using SkamBook.Application.ViewModels.Users;
 using SkamBook.Core.Interfaces.Repositories;
 using SkamBook.Core.Interfaces.Services;
 using SkamBook.Infrastructure.Context;
 
-namespace SkamBook.Application.Queries.User.LoginUser;
+namespace SkamBook.Application.Queries.Authentication.LoginUser;
 
 public class LoginUserQueryHandle : IRequestHandler<LoginUserQuery, ResponseViewModel>
 {
