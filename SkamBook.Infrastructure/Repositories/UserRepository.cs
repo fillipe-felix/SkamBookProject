@@ -51,6 +51,7 @@ public class UserRepository : IUserRepository
     {
         return await _context
             .Users
+            .Include(i => i.ImageProfile)
             .Include(user => user.Address)
             .Include(user => user.Books)
             .ThenInclude(books => books.BookImages)

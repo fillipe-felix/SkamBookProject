@@ -52,6 +52,7 @@ public class FetchNearestQueryHandler : IRequestHandler<FetchNearestQuery, Respo
                     Address = new AddressViewModel { City = listUser[i].Address.City },
                     Distance = nearestUsersAsync[i].Distance.Value,
                     DistanceString = nearestUsersAsync[i].Distance.Text,
+                    UserImage = book1.User.ImageProfile.UrlImage
                 };
                 
                 result.Books.Add(book);
