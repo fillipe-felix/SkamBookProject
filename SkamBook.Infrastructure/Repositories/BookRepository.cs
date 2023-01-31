@@ -28,6 +28,13 @@ public class BookRepository : IBookRepository
         return book;
     }
 
+    public async Task<IEnumerable<Book>> GetAllBooksAsync()
+    {
+        var books = await _context.Books.ToListAsync();
+        
+        return books;
+    }
+
     public void Dispose()
     {
         _context.Dispose();

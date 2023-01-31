@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using SkamBook.Application;
 using SkamBook.Application.Commands.Book.CreateBook;
 using SkamBook.Application.Commands.UserEntity.CreateUser;
+using SkamBook.Application.Commands.UserEntity.UpdateLatLon;
 using SkamBook.Application.Queries.Match.FetchNearest;
 
 namespace SkamBook.API.Controllers;
@@ -57,6 +58,21 @@ public class UserController : ControllerBase
         var query = new FetchNearestQuery();
         
         var response = await _mediator.Send(query);
+
+        if (response.Success.Equals(false))
+        {
+            return BadRequest(response);
+        }
+        
+        return Ok(response);
+    }
+    
+    [Authorize]
+    [HttpPut("lat-lon")]
+    public async Task<IActionResult> UpdateAltLonAsync([FromBody] UpdateLatLonCommand command)
+    {
+
+        var response = await _mediator.Send(command);
 
         if (response.Success.Equals(false))
         {

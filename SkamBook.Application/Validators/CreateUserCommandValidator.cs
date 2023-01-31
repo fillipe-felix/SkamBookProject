@@ -8,10 +8,6 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
     public CreateUserCommandValidator()
     {
-        // RuleFor(c => c.Email)
-        //     .EmailAddress()
-        //     .WithMessage("E-mail não é válido!");
-        
         RuleFor(c => c.BirthDate)
             .NotNull()
             .NotEmpty()

@@ -59,6 +59,19 @@ public class UserRepository : IUserRepository
             .Where(s => s.Address.City.Equals(city) && !s.Email.Endereco.Equals(email) && s.Books.Count > 0)
             .ToListAsync();
     }
+    
+    public async Task<IList<User>> GetAllUserWithAddressAndBooksAsync(string email)
+    {
+        return await _context
+            .Users
+            .Include(i => i.ImageProfile)
+            .Include(user => user.Address)
+            .Include(user => user.Books)
+            .ThenInclude(books => books.BookImages)
+            .ThenInclude(image => image.Image)
+            .Where(s => !s.Email.Endereco.Equals(email) && s.Books.Count > 0)
+            .ToListAsync();
+    }
 
     public async Task<User> GetUserByEmailWithBooksAsync(string email)
     {

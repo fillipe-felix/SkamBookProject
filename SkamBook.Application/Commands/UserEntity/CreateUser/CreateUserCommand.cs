@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-using MediatR;
+﻿using MediatR;
 
 using SkamBook.Application.ViewModels;
 
@@ -12,6 +10,6 @@ public class CreateUserCommand : IRequest<ResponseViewModel>
     public string FullName { get; set; }
     public string Lat { get; set; }
     public string Lon { get; set; }
-    public string ImageProfile { get; set; }
+    public string? ImageProfile { get; set; }
     public List<Guid> CategoriesId { get; set; }
 }

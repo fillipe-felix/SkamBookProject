@@ -6,4 +6,6 @@ public interface IBookRepository : IDisposable
 {
     Task Add(Book book);
     Task<Book> GetBookByIdAsync(Guid id);
+    
+    Task<IEnumerable<Book>> GetAllBooksAsync();
 }

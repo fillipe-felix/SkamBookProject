@@ -31,6 +31,12 @@ public class FetchNearestQueryHandler : IRequestHandler<FetchNearestQuery, Respo
         var user = await _userRepository.GetUserByEmailWithAddressAsync(email);
 
         var listUser = await _userRepository.GetAllUserByCityAddressWithBooksAsync(user.Address.City, user.Email.Endereco);
+
+        if (listUser is null || listUser.Count == 0)
+        {
+            listUser = await _userRepository.GetAllUserWithAddressAndBooksAsync(user.Email.Endereco);
+        }
+        
         var nearestUsersAsync = await _googleService.FindNearestUsersAsync(user.Address.Lat, user.Address.Lon, listUser);
 
         var result = new NearestUserViewModel();

@@ -38,6 +38,13 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Respo
     public async Task<ResponseViewModel> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var email = _user.ObterUserEmail();
+
+        var user = await _userRepository.GetUserByEmailAsync(email);
+
+        if (user != null)
+        {
+            return new ResponseViewModel(false, new List<string> { "Usuário já esta cadastrado" });
+        }
         
         var imageUrl = !string.IsNullOrEmpty(request.ImageProfile) ?
         await _azureService.UploadBase64Image(new List<string> { request.ImageProfile }, "skambookcontainer") : new List<string>();

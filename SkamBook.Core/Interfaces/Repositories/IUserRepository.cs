@@ -9,5 +9,6 @@ public interface IUserRepository : IDisposable
     Task AddUserAsync(User user);
     Task<IList<User>> GetAllUserAsync();
     Task<IList<User>> GetAllUserByCityAddressWithBooksAsync(string city, string email);
+    Task<IList<User>> GetAllUserWithAddressAndBooksAsync(string email);
     Task<User> GetUserByEmailWithBooksAsync(string email);
 }
