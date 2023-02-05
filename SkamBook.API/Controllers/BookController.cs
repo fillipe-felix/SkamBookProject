@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using SkamBook.Application.ViewModels;
 using SkamBook.Core.Interfaces.Repositories;
 
 namespace SkamBook.API.Controllers;
@@ -17,6 +18,8 @@ public class BookController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(IList<BookViewModel>), 200)]
+    [ProducesResponseType(typeof(IList<string>), 400)]
     public async Task<IActionResult> GetBooks()
     {
         var books = await _bookRepository.GetAllBooksAsync();

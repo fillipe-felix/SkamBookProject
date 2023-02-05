@@ -37,6 +37,7 @@ public class CategoryController : ControllerBase
     
     
     [HttpGet]
+    [ProducesResponseType(typeof(IList<Category>), 200)]
     public async Task<IActionResult> GetCategoryAsync()
     {
         var response = await _categoryRepository.GetAllAsync();

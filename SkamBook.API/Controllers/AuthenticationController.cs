@@ -7,6 +7,7 @@ using SkamBook.Application.Commands.ForgotPasswordUser;
 using SkamBook.Application.Commands.ResetPasswordUser;
 using SkamBook.Application.Commands.ValidRandomToken;
 using SkamBook.Application.Queries.Authentication.LoginUser;
+using SkamBook.Application.ViewModels;
 
 namespace SkamBook.API.Controllers;
 
@@ -23,6 +24,8 @@ public class AuthenticationController : ControllerBase
     
     [HttpPost]
     [Route("register")]
+    [ProducesResponseType(typeof(LoginResponseViewModel), 200)]
+    [ProducesResponseType(typeof(IList<string>), 400)]
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
     {
         var response = await _mediator.Send(command);
@@ -37,6 +40,8 @@ public class AuthenticationController : ControllerBase
     
     [HttpPost]
     [Route("login")]
+    [ProducesResponseType(typeof(LoginResponseViewModel), 200)]
+    [ProducesResponseType(typeof(IList<string>), 400)]
     public async Task<IActionResult> Login([FromBody] LoginUserQuery query)
     {
         var response = await _mediator.Send(query);
@@ -65,6 +70,8 @@ public class AuthenticationController : ControllerBase
     
     [HttpPut]
     [Route("reset-password")]
+    [ProducesResponseType(typeof(LoginResponseViewModel), 200)]
+    [ProducesResponseType(typeof(string), 400)]
     public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordCommand command)
     {
         var response = await _mediator.Send(command);
@@ -79,6 +86,8 @@ public class AuthenticationController : ControllerBase
     
     [HttpPut]
     [Route("valid-code")]
+    [ProducesResponseType(typeof(string), 200)]
+    [ProducesResponseType(typeof(string), 400)]
     public async Task<IActionResult> ValidCodeAsync([FromBody] ValidRandomTokenCommand command)
     {
         var response = await _mediator.Send(command);

@@ -10,6 +10,8 @@ using SkamBook.Application.Commands.Book.CreateBook;
 using SkamBook.Application.Commands.UserEntity.CreateUser;
 using SkamBook.Application.Commands.UserEntity.UpdateLatLon;
 using SkamBook.Application.Queries.Match.FetchNearest;
+using SkamBook.Application.ViewModels;
+using SkamBook.Application.ViewModels.Users;
 
 namespace SkamBook.API.Controllers;
 
@@ -26,6 +28,7 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpPost]
+    [ProducesResponseType(typeof(UserViewModel), 200)]
     public async Task<IActionResult> AddUserAsync([FromBody] CreateUserCommand command)
     {
         var response = await _mediator.Send(command);
@@ -53,6 +56,7 @@ public class UserController : ControllerBase
     
     [Authorize]
     [HttpGet("nearest-users")]
+    [ProducesResponseType(typeof(NearestUserViewModel), 200)]
     public async Task<IActionResult> FetchNearestAsync()
     {
         var query = new FetchNearestQuery();
@@ -69,6 +73,8 @@ public class UserController : ControllerBase
     
     [Authorize]
     [HttpPut("lat-lon")]
+    [ProducesResponseType(typeof(string), 200)]
+    [ProducesResponseType(typeof(IList<string>), 400)]
     public async Task<IActionResult> UpdateAltLonAsync([FromBody] UpdateLatLonCommand command)
     {
 

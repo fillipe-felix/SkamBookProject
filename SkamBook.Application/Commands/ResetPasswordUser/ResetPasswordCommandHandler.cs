@@ -36,8 +36,7 @@ public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand,
             var user = await _userManager.FindByEmailAsync(request.Email);
             var tokenReset = await _tokenPasswordRepository.FindTokenPasswordByEmail(request.Email);
 
-            var resultado = await _userManager.ResetPasswordAsync(
-                user, tokenReset.Token, request.Password);
+            var resultado = await _userManager.ResetPasswordAsync(user, tokenReset.Token, request.Password);
 
             if (resultado.Succeeded)
             {
