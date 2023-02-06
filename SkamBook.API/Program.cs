@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using SkamBook.API.Configurations;
 using SkamBook.API.Filters;
 using SkamBook.Application;
+using SkamBook.Application.Chat;
 using SkamBook.Infrastructure;
 using SkamBook.Infrastructure.Settings;
 
@@ -30,6 +31,18 @@ builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection(na
 builder.Services.Configure<GoogleApiSettings>(builder.Configuration.GetSection(nameof(GoogleApiSettings)));
 builder.Services.AddInfrastructure(builder);
 builder.Services.AddApplication(builder.Configuration);
+
+builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
     
 
 
@@ -51,11 +64,21 @@ else
 //app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
+app.UseCors("AllowSpecificOrigin");
+
+app.UseRouting();
+
 // Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chatHub");
+    endpoints.MapControllers();
+});
 
 app.Run();
 

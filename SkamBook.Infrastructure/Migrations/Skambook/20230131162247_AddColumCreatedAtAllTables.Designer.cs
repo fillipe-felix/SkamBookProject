@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkamBook.Infrastructure.Context;
 
@@ -11,9 +12,10 @@ using SkamBook.Infrastructure.Context;
 namespace SkamBook.Infrastructure.Migrations.Skambook
 {
     [DbContext(typeof(SkamBookContext))]
-    partial class SkamBookContextModelSnapshot : ModelSnapshot
+    [Migration("20230131162247_AddColumCreatedAtAllTables")]
+    partial class AddColumCreatedAtAllTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,37 +136,6 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("SkamBook.Core.Entities.Conversation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ReceiverId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SenderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("SkamBook.Core.Entities.Image", b =>
@@ -340,25 +311,6 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("SkamBook.Core.Entities.Conversation", b =>
-                {
-                    b.HasOne("SkamBook.Core.Entities.User", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SkamBook.Core.Entities.User", "Sender")
-                        .WithMany("Conversations")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("SkamBook.Core.Entities.User", b =>
                 {
                     b.HasOne("SkamBook.Core.Entities.Address", "Address")
@@ -445,8 +397,6 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
             modelBuilder.Entity("SkamBook.Core.Entities.User", b =>
                 {
                     b.Navigation("Books");
-
-                    b.Navigation("Conversations");
 
                     b.Navigation("UserCategories");
                 });
