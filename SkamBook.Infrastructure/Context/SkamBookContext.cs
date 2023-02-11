@@ -28,9 +28,9 @@ public class SkamBookContext : DbContext
         modelBuilder.Entity<User>()
             .OwnsOne(u => u.Email);
         
-        // modelBuilder.Entity<MatchBook>()
-        // .HasKey(mb => new {
-        //     UserId = mb.UserId, mb.BookId });
+        modelBuilder.Entity<MatchBook>()
+        .HasKey(mb => new {
+            UserId = mb.UserId, mb.BookId });
 
     modelBuilder.Entity<MatchBook>()
         .HasOne(mb => mb.User)

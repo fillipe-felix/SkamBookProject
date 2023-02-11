@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SkamBook.Application.ViewModels;
 using SkamBook.Core.Interfaces.Repositories;
@@ -18,9 +19,24 @@ public class BookController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(typeof(IList<BookViewModel>), 200)]
     [ProducesResponseType(typeof(IList<string>), 400)]
     public async Task<IActionResult> GetBooks()
+    {
+        var books = await _bookRepository.GetAllBooksAsync();
+
+        if (books is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(books);
+    }
+    
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetBooksLiked()
     {
         var books = await _bookRepository.GetAllBooksAsync();
 

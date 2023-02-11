@@ -72,7 +72,7 @@ namespace SkamBook.Application.Extensions
                 throw new ArgumentException(nameof(principal));
             }
 
-            var claim = principal.FindFirst("sub");
+            var claim = principal.FindFirst(ClaimTypes.NameIdentifier); //Sub
             return claim?.Value;
         }
         

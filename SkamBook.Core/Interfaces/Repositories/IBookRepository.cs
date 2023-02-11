@@ -8,4 +8,6 @@ public interface IBookRepository : IDisposable
     Task<Book> GetBookByIdAsync(Guid id);
     
     Task<IEnumerable<Book>> GetAllBooksAsync();
+    
+    Task<IList<Book>> GetAllBooksToFetchNearestAsync(Guid userId, string addressCity);
 }

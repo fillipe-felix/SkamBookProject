@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkamBook.Infrastructure.Context;
 
@@ -11,9 +12,10 @@ using SkamBook.Infrastructure.Context;
 namespace SkamBook.Infrastructure.Migrations.Skambook
 {
     [DbContext(typeof(SkamBookContext))]
-    partial class SkamBookContextModelSnapshot : ModelSnapshot
+    [Migration("20230211134828_UpdateRelationshipTableMatch")]
+    partial class UpdateRelationshipTableMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

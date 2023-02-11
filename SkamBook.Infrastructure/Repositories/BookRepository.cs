@@ -35,6 +35,23 @@ public class BookRepository : IBookRepository
         return books;
     }
 
+    public async Task<IList<Book>> GetAllBooksToFetchNearestAsync(Guid userId, string addressCity)
+    {
+        var response = await _context.Books
+           .Include(b => b.User.Address)
+           .Include(b => b.BookImages)
+           .ThenInclude(b => b.Image)
+           .Include(b => b.LikedBy)
+           .Include(b => b.User.ImageProfile)
+           .Where(s => 
+               (s.User.Address.City.Equals(addressCity) || s.User.Books.Count > 0) && 
+               !s.User.Id.Equals(userId) 
+               && s.LikedBy.All(lb => lb.BookIdLiked != s.Id))
+           .ToListAsync();
+
+       return response;
+    }
+
     public void Dispose()
     {
         _context.Dispose();

@@ -33,24 +33,6 @@ public class GoogleService : IGoogleService
         _googleApiSettings = googleApiSettings.Value;
     }
 
-    public async Task GetRoute(string lat, string lon)
-    {
-        var latDouble = double.Parse(lat, System.Globalization.CultureInfo.InvariantCulture);
-        var lonDouble = double.Parse(lon, System.Globalization.CultureInfo.InvariantCulture);
-        
-        var request = new LocationGeocodeRequest
-        {
-            Key = _googleApiSettings.ApiKey,
-            Location = new Coordinate(latDouble,lonDouble)
-        };
-
-        var response = GoogleMaps.Geocode.LocationGeocode.Query(request);
-
-        var teste = JsonConvert.SerializeObject(response.Results);
-
-        Console.WriteLine(JsonConvert.SerializeObject(response.Results));
-    }
-
     public async Task<string> GetCityUserByLatLonAsync(string lat, string lon)
     {
         var latDouble = double.Parse(lat, System.Globalization.CultureInfo.InvariantCulture);
@@ -80,7 +62,7 @@ public class GoogleService : IGoogleService
         return "";
     }
 
-    public async Task<IList<Element>> FindNearestUsersAsync(string lat, string lon, IEnumerable<User> users)
+    public async Task<IList<Element>> FindNearestUsersAsync(string lat, string lon, IEnumerable<Book> books)
     {
         var latDouble = double.Parse(lat, System.Globalization.CultureInfo.InvariantCulture);
         var lonDouble = double.Parse(lon, System.Globalization.CultureInfo.InvariantCulture);
@@ -88,10 +70,10 @@ public class GoogleService : IGoogleService
         var origin = new CoordinateEx(latDouble, lonDouble);
         var destinations = new List<LocationEx>();
         
-        foreach (var user in users)
+        foreach (var boo in books)
         {
-            var latDes = double.Parse(user.Address.Lat, System.Globalization.CultureInfo.InvariantCulture);
-            var lonDes = double.Parse(user.Address.Lon, System.Globalization.CultureInfo.InvariantCulture);
+            var latDes = double.Parse(boo.User.Address.Lat, System.Globalization.CultureInfo.InvariantCulture);
+            var lonDes = double.Parse(boo.User.Address.Lon, System.Globalization.CultureInfo.InvariantCulture);
             destinations.Add(new LocationEx(new CoordinateEx(latDes, lonDes)));
         }
 

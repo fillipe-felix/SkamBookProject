@@ -18,8 +18,6 @@ public class AzureService : IAzureService
 
     public async Task<IEnumerable<string>> UploadBase64Image(List<string> base64Images, string container)
     {
-        // Gera um nome randomico para imagem
-        var fileName = Guid.NewGuid().ToString() + ".jpg";
         var urls = new List<string>();
         
         // Limpa o hash enviado
@@ -27,6 +25,8 @@ public class AzureService : IAzureService
 
         foreach (var d in data)
         {
+            // Gera um nome randomico para imagem
+            var fileName = Guid.NewGuid() + ".jpg";
             // Gera um array de Bytes
             byte[] imageBytes = Convert.FromBase64String(d);
     

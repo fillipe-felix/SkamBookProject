@@ -15,13 +15,19 @@ public class FetchNearestQueryHandler : IRequestHandler<FetchNearestQuery, Respo
 {
     private readonly IUserRepository _userRepository;
     private readonly IGoogleService _googleService;
+    private readonly IBookRepository _bookRepository;
     private readonly IUser _user;
 
-    public FetchNearestQueryHandler(IUserRepository userRepository, IGoogleService googleService, IUser user)
+    public FetchNearestQueryHandler(
+        IUserRepository userRepository, 
+        IGoogleService googleService, 
+        IUser user, 
+        IBookRepository bookRepository)
     {
         _userRepository = userRepository;
         _googleService = googleService;
         _user = user;
+        _bookRepository = bookRepository;
     }
 
     public async Task<ResponseViewModel> Handle(FetchNearestQuery request, CancellationToken cancellationToken)
@@ -29,40 +35,34 @@ public class FetchNearestQueryHandler : IRequestHandler<FetchNearestQuery, Respo
         var email = _user.ObterUserEmail();
         
         var user = await _userRepository.GetUserByEmailWithAddressAsync(email);
-
-        var listUser = await _userRepository.GetAllUserByCityAddressWithBooksAsync(user.Address.City, user.Email.Endereco);
-
-        if (listUser is null || listUser.Count == 0)
-        {
-            listUser = await _userRepository.GetAllUserWithAddressAndBooksAsync(user.Email.Endereco);
-        }
         
-        var nearestUsersAsync = await _googleService.FindNearestUsersAsync(user.Address.Lat, user.Address.Lon, listUser);
+        var listBooks = await _bookRepository.GetAllBooksToFetchNearestAsync(user.Id, user.Address.City);
+
+        var nearestUsersAsync = await _googleService.FindNearestUsersAsync(user.Address.Lat, user.Address.Lon, listBooks);
 
         var result = new NearestUserViewModel();
 
-        for (int i = 0; i < listUser.Count; i++)
+        for (int i = 0; i < listBooks.Count; i++)
         {
-            foreach (var book1 in listUser[i].Books)
-            {
-                var imagesUrl = book1.BookImages.Select(s => s.Image.UrlImage);
+            
+                var imagesUrl = listBooks[i].BookImages.Select(s => s.Image.UrlImage);
 
                 var book = new BookViewModel
                 {
-                    Id = book1.Id,
-                    Name = book1.Name,
-                    Author = book1.Author,
-                    Description = book1.Description,
+                    Id = listBooks[i].Id,
+                    Name = listBooks[i].Name,
+                    Author = listBooks[i].Author,
+                    Description = listBooks[i].Description,
                     Images = imagesUrl,
-                    UserId = listUser[i].Id,
-                    Address = new AddressViewModel { City = listUser[i].Address.City },
+                    UserId = listBooks[i].User.Id,
+                    Address = new AddressViewModel { City = listBooks[i].User.Address.City },
                     Distance = nearestUsersAsync[i].Distance.Value,
                     DistanceString = nearestUsersAsync[i].Distance.Text,
-                    UserImage = book1.User.ImageProfile.UrlImage
+                    UserImage = listBooks[i].User.ImageProfile.UrlImage
                 };
                 
                 result.Books.Add(book);
-            }
+            
         }
 
         var resultOrderedEnumerable = from r in result.Books

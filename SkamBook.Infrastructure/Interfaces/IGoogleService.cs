@@ -6,8 +6,7 @@ namespace SkamBook.Infrastructure.Interfaces;
 
 public interface IGoogleService
 {
-    Task GetRoute(string lat, string lon);
     Task<string> GetCityUserByLatLonAsync(string lat, string lon);
     
-    Task<IList<Element>> FindNearestUsersAsync(string lat, string lon, IEnumerable<User> users);
+    Task<IList<Element>> FindNearestUsersAsync(string lat, string lon, IEnumerable<Book> users);
 }

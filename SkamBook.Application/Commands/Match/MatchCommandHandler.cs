@@ -57,10 +57,10 @@ public class MatchCommandHandler : IRequestHandler<MatchCommand, ResponseViewMod
             {
                 match = new MatchBook
                 {
-                    BookId = userBook.Id,
                     BookIdLiked = bookLiked.Id,
-                    UserId = userBook.UserId,
-                    UserIdLiked = bookLiked.UserId
+                    UserIdLiked = bookLiked.UserId,
+                    User = user,
+                    Book = userBook
                 };
                 await _matchRepository.AddMatchBookAsync(match);
             }

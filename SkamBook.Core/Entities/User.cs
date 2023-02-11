@@ -30,4 +30,6 @@ public class User : BaseEntity
 
     public List<UserCategory> UserCategories { get; private set; }
     public List<Book> Books { get; private set; }
+    public virtual ICollection<Conversation> Conversations { get; private set; }
+    public virtual ICollection<MatchBook> LikedBooks { get; private set; }
 }
