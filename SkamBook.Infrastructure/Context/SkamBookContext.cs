@@ -27,8 +27,28 @@ public class SkamBookContext : DbContext
     {
         modelBuilder.Entity<User>()
             .OwnsOne(u => u.Email);
+        
+        // modelBuilder.Entity<MatchBook>()
+        // .HasKey(mb => new {
+        //     UserId = mb.UserId, mb.BookId });
 
-        modelBuilder.ApplyConfiguration(new ConversationMap());
+    modelBuilder.Entity<MatchBook>()
+        .HasOne(mb => mb.User)
+        .WithMany(u => u.LikedBooks)
+        .HasForeignKey(mb => mb.UserId)
+        .OnDelete(DeleteBehavior.NoAction);
+
+    modelBuilder.Entity<MatchBook>()
+        .HasOne(mb => mb.Book)
+        .WithMany(b => b.LikedBy)
+        .HasForeignKey(mb => mb.BookId)
+        .OnDelete(DeleteBehavior.NoAction);
+
+
+
+
+
+    modelBuilder.ApplyConfiguration(new ConversationMap());
         
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
