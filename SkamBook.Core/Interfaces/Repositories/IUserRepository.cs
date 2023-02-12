@@ -9,4 +9,6 @@ public interface IUserRepository : IDisposable
     Task<User> GetUserByEmailWithAddressAsync(string email);
     Task AddUserAsync(User user);
     Task<User> GetUserByEmailWithBooksAsync(string email);
+    
+    Task<IEnumerable<User>> GetUsersLikedBooks(Guid userId);
 }

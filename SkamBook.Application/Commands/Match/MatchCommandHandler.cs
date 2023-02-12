@@ -53,7 +53,7 @@ public class MatchCommandHandler : IRequestHandler<MatchCommand, ResponseViewMod
         {
             match = await _matchRepository.GetMatchByIdBooks(userBook.Id, bookLiked.Id);
         
-            if (match == null)
+            if (match is null)
             {
                 match = new MatchBook
                 {

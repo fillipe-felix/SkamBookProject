@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using SkamBook.Application.Queries.BookQuery.BooksLiked;
 using SkamBook.Application.ViewModels;
 using SkamBook.Core.Interfaces.Repositories;
 
@@ -11,11 +14,13 @@ namespace SkamBook.API.Controllers;
 public class BookController : ControllerBase
 {
     private readonly IBookRepository _bookRepository;
+    private readonly IMediator _mediator;
 
 
-    public BookController(IBookRepository bookRepository)
+    public BookController(IBookRepository bookRepository, IMediator mediator)
     {
         _bookRepository = bookRepository;
+        _mediator = mediator;
     }
 
     [HttpGet]
@@ -34,17 +39,19 @@ public class BookController : ControllerBase
         return Ok(books);
     }
     
-    [HttpGet]
+    [HttpGet("liked")]
     [Authorize]
     public async Task<IActionResult> GetBooksLiked()
     {
-        var books = await _bookRepository.GetAllBooksAsync();
+        var query = new BooksLikedQuery();
+        
+        var response = await _mediator.Send(query);
 
-        if (books is null)
+        if (response.Success.Equals(false))
         {
-            return NotFound();
+            return BadRequest(response);
         }
-
-        return Ok(books);
+        
+        return Ok(response);
     }
 }

@@ -57,6 +57,18 @@ public class UserRepository : IUserRepository
         return user;
     }
 
+    public async Task<IEnumerable<User>> GetUsersLikedBooks(Guid userId)
+    {
+        var response = await _context
+            .Users
+            .Include(u => u.Books)
+            .ThenInclude(b => b.LikedBooks)
+            .Where(u => u.Books.All(b => b.UserId == userId))
+            .ToListAsync();
+
+        return response;
+    }
+
     public void Dispose()
     {
         _context.Dispose();

@@ -10,4 +10,7 @@ public interface IBookRepository : IDisposable
     Task<IEnumerable<Book>> GetAllBooksAsync();
     
     Task<IList<Book>> GetAllBooksToFetchNearestAsync(Guid userId, string addressCity);
+
+    Task<IEnumerable<Guid>> GetBooksLikedIdById(Guid userId);
+    Task<IList<Book>> GetAllBookById(IEnumerable<Guid> booksId);
 }

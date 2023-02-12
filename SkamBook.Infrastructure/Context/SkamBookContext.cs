@@ -33,6 +33,12 @@ public class SkamBookContext : DbContext
         .HasMany(b => b.LikedBy)
         .WithOne(m => m.BookLiked)
         .HasForeignKey(m => m.BookLikedId);
+        
+        modelBuilder.Entity<MatchBook>()
+        .HasOne(m => m.BookLiked)
+        .WithMany(b => b.LikedBy)
+        .HasForeignKey(m => m.BookLikedId)
+        .OnDelete(DeleteBehavior.NoAction);
 
     modelBuilder.Entity<Book>()
         .HasMany(b => b.LikedBooks)
@@ -44,6 +50,8 @@ public class SkamBookContext : DbContext
         .WithMany(b => b.LikedBooks)
         .HasForeignKey(m => m.BookLikeId)
         .OnDelete(DeleteBehavior.NoAction);
+    
+    
 
 
 
