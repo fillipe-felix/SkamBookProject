@@ -57,23 +57,30 @@ public class MatchCommandHandler : IRequestHandler<MatchCommand, ResponseViewMod
             {
                 match = new MatchBook
                 {
-                    BookIdLiked = bookLiked.Id,
-                    UserIdLiked = bookLiked.UserId,
-                    User = user,
-                    Book = userBook
+                    UserLikeId = userBook.UserId,
+                    UserLikedId = bookLiked.UserId,
+                    BookLike = userBook,
+                    BookLiked = bookLiked
                 };
                 await _matchRepository.AddMatchBookAsync(match);
+                await _unitOfWork.Commit();
             }
             else
             {
                 match.IsMatched = true;
                 await _matchRepository.UpdateMatchBookAsync(match);
+                await _unitOfWork.Commit();
+                
+                return new ResponseViewModel(true, new
+                {
+                    UserName = match.BookLike.User.FullName,
+                    UserId = match.BookLike.User.Id,
+                    Match = match.IsMatched
+                });
             }
-
-            await _unitOfWork.Commit();
         }
 
-        return new ResponseViewModel(true, match);
+        return new ResponseViewModel(true, "Like feito");
     }
 
     

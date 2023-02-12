@@ -27,4 +27,10 @@
       <ProjectReference Include="..\SkamBook.Core\SkamBook.Core.csproj" />
     </ItemGroup>
 
+    
+
+    <ItemGroup>
+      <Folder Include="Migrations\Skambook" />
+    </ItemGroup>
+
 </Project>

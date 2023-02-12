@@ -7,8 +7,9 @@ public class User : BaseEntity
         
     }
 
-    public User(string fullName, DateTime birthDate, string email, string lat, string lon, string city, List<Guid> categories, Image imageProfile)
+    public User(Guid userId, string fullName, DateTime birthDate, string email, string lat, string lon, string city, List<Guid> categories, Image imageProfile)
     {
+        Id = userId;
         FullName = fullName;
         BirthDate = birthDate;
         Email = new Email(email);
@@ -31,5 +32,4 @@ public class User : BaseEntity
     public List<UserCategory> UserCategories { get; private set; }
     public List<Book> Books { get; private set; }
     public virtual ICollection<Conversation> Conversations { get; private set; }
-    public virtual ICollection<MatchBook> LikedBooks { get; private set; }
 }

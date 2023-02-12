@@ -186,30 +186,33 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
 
             modelBuilder.Entity("SkamBook.Core.Entities.MatchBook", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BookId")
+                    b.Property<Guid>("BookLikeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BookIdLiked")
+                    b.Property<Guid>("BookLikedId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsMatched")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("UserIdLiked")
+                    b.Property<Guid>("UserLikeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("UserId", "BookId");
+                    b.Property<Guid>("UserLikedId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("BookId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookLikeId");
+
+                    b.HasIndex("BookLikedId");
 
                     b.ToTable("Matches");
                 });
@@ -362,21 +365,21 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
 
             modelBuilder.Entity("SkamBook.Core.Entities.MatchBook", b =>
                 {
-                    b.HasOne("SkamBook.Core.Entities.Book", "Book")
-                        .WithMany("LikedBy")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SkamBook.Core.Entities.User", "User")
+                    b.HasOne("SkamBook.Core.Entities.Book", "BookLike")
                         .WithMany("LikedBooks")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("BookLikeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.HasOne("SkamBook.Core.Entities.Book", "BookLiked")
+                        .WithMany("LikedBy")
+                        .HasForeignKey("BookLikedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("BookLike");
+
+                    b.Navigation("BookLiked");
                 });
 
             modelBuilder.Entity("SkamBook.Core.Entities.User", b =>
@@ -449,6 +452,8 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
 
                     b.Navigation("BookImages");
 
+                    b.Navigation("LikedBooks");
+
                     b.Navigation("LikedBy");
                 });
 
@@ -469,8 +474,6 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                     b.Navigation("Books");
 
                     b.Navigation("Conversations");
-
-                    b.Navigation("LikedBooks");
 
                     b.Navigation("UserCategories");
                 });

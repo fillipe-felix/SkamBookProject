@@ -38,6 +38,11 @@ public class FetchNearestQueryHandler : IRequestHandler<FetchNearestQuery, Respo
         
         var listBooks = await _bookRepository.GetAllBooksToFetchNearestAsync(user.Id, user.Address.City);
 
+        if (listBooks.Count == 0)
+        {
+            return new ResponseViewModel(false, "Não existe usuários próximos");
+        }
+
         var nearestUsersAsync = await _googleService.FindNearestUsersAsync(user.Address.Lat, user.Address.Lon, listBooks);
 
         var result = new NearestUserViewModel();

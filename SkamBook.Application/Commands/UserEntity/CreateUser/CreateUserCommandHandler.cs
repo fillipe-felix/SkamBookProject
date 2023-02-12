@@ -38,6 +38,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Respo
     public async Task<ResponseViewModel> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var email = _user.ObterUserEmail();
+        var userId = _user.ObterUserId();
 
         var user = await _userRepository.GetUserByEmailAsync(email);
 
@@ -52,6 +53,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Respo
         var city = await _googleService.GetCityUserByLatLonAsync(request.Lat, request.Lon);
 
         var userEntity = new User(
+            userId,
             request.FullName,
             request.BirthDate,
             email,

@@ -27,4 +27,5 @@ public class Book : BaseEntity
     
     public List<BookImage> BookImages { get; private set; }
     public virtual ICollection<MatchBook> LikedBy { get; set; }
+    public virtual ICollection<MatchBook> LikedBooks { get; set; }
 }

@@ -20,10 +20,20 @@ public class MatchReposotiry : IMatchRepository
     public async Task<MatchBook> GetMatchByIdBooks(Guid book1Id, Guid likedBookId)
     {
         var matches = await _context.Matches.FirstOrDefaultAsync(m =>
-            (m.BookId == book1Id && m.BookIdLiked == likedBookId) ||
-            (m.BookId == likedBookId && m.BookIdLiked == book1Id));
+            (m.BookLikeId == book1Id && m.BookLikedId == likedBookId) ||
+            (m.BookLikeId == likedBookId && m.BookLikedId == book1Id));
 
         return matches;
+    }
+
+    public async Task<IEnumerable<MatchBook>> GetLikesUserById(Guid userId)
+    {
+        var respose = await _context
+            .Matches
+            //.Where(m => m.UserId == userId)
+            .ToListAsync();
+
+        return respose;
     }
 
     public async Task AddMatchBookAsync(MatchBook matchBook)

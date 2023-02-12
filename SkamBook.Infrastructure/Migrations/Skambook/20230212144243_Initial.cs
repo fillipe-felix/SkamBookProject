@@ -227,27 +227,27 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                 name: "Matches",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserIdLiked = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookIdLiked = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookIdLike = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsMatched = table.Column<bool>(type: "bit", nullable: false),
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserLikeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserLikedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BookLikeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BookLikedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsMatched = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Matches", x => new { x.UserId, x.BookId });
+                    table.PrimaryKey("PK_Matches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Matches_Books_BookId",
-                        column: x => x.BookId,
+                        name: "FK_Matches_Books_BookLikedId",
+                        column: x => x.BookLikedId,
                         principalTable: "Books",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Matches_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Matches_Books_BookLikeId",
+                        column: x => x.BookLikeId,
+                        principalTable: "Books",
                         principalColumn: "Id");
                 });
 
@@ -277,9 +277,14 @@ namespace SkamBook.Infrastructure.Migrations.Skambook
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Matches_BookId",
+                name: "IX_Matches_BookLikedId",
                 table: "Matches",
-                column: "BookId");
+                column: "BookLikedId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_BookLikeId",
+                table: "Matches",
+                column: "BookLikeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserCategory_CategoryId",
